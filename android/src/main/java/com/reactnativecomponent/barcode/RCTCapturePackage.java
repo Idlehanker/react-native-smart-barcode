@@ -12,43 +12,40 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 public class RCTCapturePackage implements ReactPackage {
-//    Activity activity;
+    // Activity activity;
     RCTCaptureModule mModuleInstance;
     RCTCaptureManager captureManager;
-//    RCTLinearGradientViewManager linearGradientViewManager;
+    // RCTLinearGradientViewManager linearGradientViewManager;
 
-//   public RCTCapturePackage(Activity activity) {
-//            this.activity = activity;
-//        captureManager = new RCTCaptureManager(activity);
-////        linearGradientViewManager = new RCTLinearGradientViewManager(activity);
-//    }
+    // public RCTCapturePackage(Activity activity) {
+    // this.activity = activity;
+    // captureManager = new RCTCaptureManager(activity);
+    //// linearGradientViewManager = new RCTLinearGradientViewManager(activity);
+    // }
 
     public RCTCapturePackage() {
         captureManager = new RCTCaptureManager();
     }
 
+    @Override
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
+        mModuleInstance = new RCTCaptureModule(reactApplicationContext, captureManager);
+        return Arrays.<NativeModule>asList(mModuleInstance);
+    }
+
+    // @Override
+    @Deprecated
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
 
     @Override
-        public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
-             mModuleInstance = new RCTCaptureModule(reactApplicationContext,captureManager);
-        return Arrays.<NativeModule>asList(
-                mModuleInstance
-        );
-        }
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
+        // noinspection ArraysAsListWithZeroOrOneArgument
 
-        @Override
-        public List<Class<? extends JavaScriptModule>> createJSModules() {
-            return Collections.emptyList();
-        }
-
-        @Override
-        public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
-            //noinspection ArraysAsListWithZeroOrOneArgument
-
-//            return Arrays.<ViewManager>asList(captureManager,linearGradientViewManager);
-            return Arrays.<ViewManager>asList(captureManager);
-        }
-
+        // return Arrays.<ViewManager>asList(captureManager,linearGradientViewManager);
+        return Arrays.<ViewManager>asList(captureManager);
     }
+
+}
