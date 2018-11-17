@@ -119,16 +119,20 @@ DecodeHandler extends Handler {
 //     PlanarYUVLuminanceSource source = CameraManager.get().buildLuminanceSource(data, height, width);
     // switch width and height
 //    Log.i("Test","DecodeHandler_height:"+height+",width:"+width);
-    PlanarYUVLuminanceSource source = CameraManager.get().buildLuminanceSource(rotatedData, height, width);
-    
-    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-    try {
-      rawResult = multiFormatReader.decodeWithState(bitmap);
-    } catch (ReaderException re) {
-      // continue
-    } finally {
-      multiFormatReader.reset();
-    }
+    PlanarYUVLuminanceSource source = null;
+        try {
+            source = CameraManager.get().buildLuminanceSource(rotatedData, height, width);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            rawResult = multiFormatReader.decodeWithState(bitmap);
+        } catch (ReaderException re) {
+            // continue
+        } catch (Exception re) {
+            //todo build resource may cause exception
+            // continue
+            Log.e(TAG, "uncaught exception", re);
+        } finally {
+            multiFormatReader.reset();
+        }
 
     if (rawResult != null) {
       long end = System.currentTimeMillis();
